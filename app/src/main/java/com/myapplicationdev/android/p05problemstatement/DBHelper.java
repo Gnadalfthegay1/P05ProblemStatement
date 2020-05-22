@@ -143,9 +143,9 @@ public class DBHelper extends SQLiteOpenHelper {
         db.close();
         return songs;
     }
-    public ArrayList<Song> getDateOfSong(int years) {
+    public ArrayList<Song> getDateOfSong(String years) {
         ArrayList<Song> songs = new ArrayList<Song>();
-        String selectQuery = "SELECT * FROM " + TABLE_NOTE +" WHERE "+ COLUMN_YEAR + " = "+years;
+        String selectQuery = "SELECT * FROM " + TABLE_NOTE +" WHERE "+ COLUMN_YEAR + " = '"+years+"'";
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(selectQuery, null);
 

@@ -34,30 +34,36 @@ public class ListActivity extends AppCompatActivity {
         songs = db.getAllSongs();
         aa = new CustomAdapter(this, R.layout.row, songs);
         lv.setAdapter(aa);
-        String year[] = new String[songs.size()];
+        String year[] = new String[songs.size()+1];
+        year[0] = "select a year";
         for(int i = 0; i< songs.size(); i++){
             Song s = songs.get(i);
-            year[i] = Integer.toString(s.getYear());
+            year[i+1] = Integer.toString(s.getYear());
         }
         ArrayAdapter<String> a = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, year);
         s.setAdapter(a);
         s.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                DBHelper db = new DBHelper(ListActivity.this);
-                int date = Integer.parseInt((String) parent.getItemAtPosition(position));
-                songs = db.getDateOfSong(date);
-                aa = new CustomAdapter(ListActivity.this, R.layout.row, songs);
-                lv.setAdapter(aa);
+                if(position == 0){
+                    DBHelper db = new DBHelper(ListActivity.this);
+                    songs = db.getAllSongs();
+                    aa = new CustomAdapter(ListActivity.this, R.layout.row, songs);
+                    lv.setAdapter(aa);
+                }else{
+                    DBHelper db = new DBHelper(ListActivity.this);
+                    String date = (String) parent.getItemAtPosition(position);
+                    songs = db.getDateOfSong(date);
+                    aa = new CustomAdapter(ListActivity.this, R.layout.row, songs);
+                    lv.setAdapter(aa);
+                }
+
 
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
-                DBHelper db = new DBHelper(ListActivity.this);
-                songs = db.getAllSongs();
-                aa = new CustomAdapter(ListActivity.this, R.layout.row, songs);
-                lv.setAdapter(aa);
+
             }
         });
         btSort.setOnClickListener(new View.OnClickListener() {
