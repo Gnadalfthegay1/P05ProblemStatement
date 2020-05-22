@@ -41,7 +41,6 @@ public class ListActivity extends AppCompatActivity {
         }
         ArrayAdapter<String> a = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, year);
         s.setAdapter(a);
-
         s.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -55,7 +54,10 @@ public class ListActivity extends AppCompatActivity {
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
-
+                DBHelper db = new DBHelper(ListActivity.this);
+                songs = db.getAllSongs();
+                aa = new CustomAdapter(ListActivity.this, R.layout.row, songs);
+                lv.setAdapter(aa);
             }
         });
         btSort.setOnClickListener(new View.OnClickListener() {
